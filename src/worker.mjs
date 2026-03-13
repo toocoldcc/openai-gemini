@@ -358,7 +358,8 @@ const transformFnResponse = ({ content, tool_call_id }, parts) => {
     response = JSON.parse(content);
   } catch (err) {
     console.error("Error parsing function response content:", err);
-    throw new HttpError("Invalid function response: " + content, 400);
+    // 兼容 response 为字符串的场景，将其包装成有效格式
+    response = { result: content };
   }
   if (typeof response !== "object" || response === null || Array.isArray(response)) {
     response = { result: response };
